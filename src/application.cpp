@@ -102,7 +102,7 @@ bool Application::parseConfigFile(const char* config_filename){
 
   /*while (!config_file.eof())
   {
-    
+
   }*/
 
   return true;
@@ -178,10 +178,19 @@ void Application::update(float time, float timeSinceLastFrame) {
   m_camera.Update();
   m_camera.GetMatricies(m_projmat, m_viewmat, m_worldmat);
 
+  const int m = 1, n = 1;
+  int i = 0, j = 0;
+  glm::mat4 scissor_mat;
+  scissor_mat[0].x  = m; scissor_mat[0].y  = 0; scissor_mat[0].z  = 0; scissor_mat[0].w  = m - 2 * i - 1;
+  scissor_mat[1].x  = 0; scissor_mat[1].y  = n; scissor_mat[1].z  = 0; scissor_mat[1].w  = n - 2 * j - 1;
+  scissor_mat[2].x  = 0; scissor_mat[2].y  = 0; scissor_mat[2].z  = 1; scissor_mat[2].w = 0;
+  scissor_mat[3].x  = 0; scissor_mat[3].y  = 0; scissor_mat[3].z  = 0; scissor_mat[3].w = 1;
+  scissor_mat = glm::transpose(scissor_mat);
+
   m_inv_viewmat = glm::inverse(m_viewmat);
   glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_transformation_buffer);
   glm::mat4* transform_matrices = (glm::mat4*)glMapBufferRange(GL_UNIFORM_BUFFER, 0, 3 * sizeof(glm::mat4), GL_MAP_WRITE_BIT);
-  transform_matrices[0] = m_projmat;
+  transform_matrices[0] = scissor_mat * m_projmat;
   transform_matrices[1] = m_viewmat;
   transform_matrices[2] = m_worldmat;
   glUnmapBuffer(GL_UNIFORM_BUFFER);
@@ -281,7 +290,7 @@ void Application::EventMousePos(GLFWwindow* window, double xpos, double ypos) {
       m_camera.OffsetFrustum(static_cast<int>(xpos), static_cast<int>(ypos));
     }
   }
-  
+
   m_camera.SetMousePos(static_cast<int>(xpos), static_cast<int>(ypos));
 
 }
