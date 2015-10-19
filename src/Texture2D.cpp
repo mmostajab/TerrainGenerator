@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "targa.h"
+#include "Targa.h"
 
 Texture2D::Texture2D()
 {

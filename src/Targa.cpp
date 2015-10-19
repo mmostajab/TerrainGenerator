@@ -2,7 +2,7 @@
 #include <cassert>
 #include <iostream>
 
-#include "targa.h"
+#include "Targa.h"
 
 using std::ifstream;
 
@@ -22,7 +22,7 @@ TargaImage::~TargaImage()
 
 bool TargaImage::isImageTypeSupported(const TargaHeader& header)
 {
-  //If this image is not one of the supported types, 
+  //If this image is not one of the supported types,
   //then return false (currently only support color images)
   if (((header.imageTypeCode != TFT_RGB) &&
     //(header.imageTypeCode != TFT_GRAYSCALE) &&

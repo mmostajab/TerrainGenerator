@@ -28,7 +28,7 @@ static std::string convertFileToString(const std::string& filename) {
 
 static std::string convertNumToString(const int& num){
   char buf[11];
-  sprintf_s(buf, "%d", num);
+  sprintf(buf, "%d", num);
   return std::string(buf);
 }
 
