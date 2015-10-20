@@ -145,7 +145,7 @@ void Application::create() {
    float rand_bound = 1.0f;
    boost::random::mt19937 rng;
    boost::random::uniform_real_distribution<> dist(-rand_bound, +rand_bound);
-   rng.seed(clock());
+   rng.seed(0);
 
    size_t nSeeds = 500;
    size_t npoints = 40;
@@ -178,7 +178,7 @@ void Application::update(float time, float timeSinceLastFrame) {
   m_camera.Update();
   m_camera.GetMatricies(m_projmat, m_viewmat, m_worldmat);
 
-  const int m = 2, n = 2;
+  const int m = 1, n = 1;
   int i = 0, j = 0;
   glm::mat4 scissor_mat;
   scissor_mat[0].x  = m; scissor_mat[0].y  = 0; scissor_mat[0].z  = 0; scissor_mat[0].w  = m - (2 * i + 1);
@@ -192,19 +192,10 @@ void Application::update(float time, float timeSinceLastFrame) {
   m_inv_viewmat = glm::inverse(m_viewmat);
   glBindBufferBase(GL_UNIFORM_BUFFER, 0, m_transformation_buffer);
   glm::mat4* transform_matrices = (glm::mat4*)glMapBufferRange(GL_UNIFORM_BUFFER, 0, 3 * sizeof(glm::mat4), GL_MAP_WRITE_BIT);
-  transform_matrices[0] = m_projmat * scissor_mat;
+  transform_matrices[0] = scissor_mat * m_projmat;
   transform_matrices[1] = m_viewmat;
   transform_matrices[2] = m_worldmat;
   glUnmapBuffer(GL_UNIFORM_BUFFER);
-
-  m_worldmat = glm::translate(glm::mat(1.0f), glm::vec3(10.0, 10.0 ,10.0f));
-
-  std::cout << "World Mat\n";
-  std::cout
-  << m_worldmat[0].x << " " << m_worldmat[0].y << " " << m_worldmat[0].z << " " << m_worldmat[0].w << std::endl
-  << m_worldmat[1].x << " " << m_worldmat[1].y << " " << m_worldmat[1].z << " " << m_worldmat[1].w << std::endl
-  << m_worldmat[2].x << " " << m_worldmat[2].y << " " << m_worldmat[2].z << " " << m_worldmat[2].w << std::endl
-  << m_worldmat[3].x << " " << m_worldmat[3].y << " " << m_worldmat[3].z << " " << m_worldmat[3].w << std::endl << std::endl << std::endl << std::endl;
 
   std::cout << "Proj Mat\n";
   std::cout
