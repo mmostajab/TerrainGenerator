@@ -16,6 +16,7 @@ Camera::Camera() {
 
   camera_pitch = 0.0f;
   camera_heading = 0.0f;
+
 }
 
 Camera::~Camera() {

@@ -72,6 +72,7 @@ private:
     bool                  wireframe;
 
     static Camera         m_camera;
+    GLuint                m_coord_system_program;
     glm::mat4             m_projmat, m_viewmat, m_worldmat, m_inv_viewmat;
     Terrain               terrain;
     BezierCurve           curve;
